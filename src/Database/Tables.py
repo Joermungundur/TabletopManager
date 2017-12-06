@@ -6,22 +6,9 @@ Created on 06.12.2017
 
 from sqlalchemy import Column
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.sqltypes import String, BigInteger
-from sqlalchemy.sql.schema import ForeignKey, Table
+from sqlalchemy.sql.sqltypes import String, BigInteger, Boolean
+from sqlalchemy.sql.schema import ForeignKey
 from Database.Basic import Basic
-
-'''zt_System_Setting = Table('zt_system_setting', Basic.base().metadata,
-                          Column('Sy_ID', BigInteger, ForeignKey('system.ID', ondelete='CASCADE'),
-                                 primary_key=True),
-                          Column('Se_ID', BigInteger, ForeignKey('setting.ID', ondelete='CASCADE'),
-                                 primary_key=True))
- 
-zt_Color_Color_Type = Table('zt_color_color_type', Basic.base().metadata,
-                            Column('C_ID', BigInteger, ForeignKey('color.ID', ondelete='CASCADE'),
-                                 primary_key=True),
-                            Column('CT_ID', BigInteger(), ForeignKey('color_type.ID', ondelete='CASCADE'),
-                                 primary_key=True))
-'''
 
 class t_Company(Basic.base):
     __tablename__ = "company"
@@ -79,6 +66,8 @@ class t_Color(Basic.base):
     C_ID = Column(BigInteger, ForeignKey('company.ID', ondelete='CASCADE'))
     Name = Column(String(50))
     ID_Num = Column(String(50))
+    Owned = Column(Boolean, default=True)
+    InStock = Column(Boolean, default=True) 
     types = relationship("zt_Color_Color_Type", back_populates="color")
 #     types = relationship("t_Color_Type", secondary=zt_Color_Color_Type,
 #                          back_populates="colors", passive_deletes=True)
@@ -86,10 +75,12 @@ class t_Color(Basic.base):
     scheme_lines = relationship("t_Paint_Scheme_Line", back_populates="colors", passive_deletes=True)
     
     def __repr__(self):
-        return "Id = {}\nC_ID = {}\nName = {}\nID_Num = {}".format(str(self.ID), 
-                                                                   str(self.C_ID), 
-                                                                   self.Name, 
-                                                                   str(self.ID_Num))
+        return "Id = {}\nC_ID = {}\nName = {}\nID_Num = {}\nOwned = {}\nInStock = {}".format(str(self.ID), 
+                                                                                             str(self.C_ID), 
+                                                                                             self.Name, 
+                                                                                             str(self.ID_Num),
+                                                                                             str(self.Owned),
+                                                                                             str(self.InStock))
         
 class t_Color_Type(Basic.base):
     __tablename__ = "color_type"

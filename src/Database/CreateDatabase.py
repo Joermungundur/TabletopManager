@@ -27,13 +27,13 @@ def createDatabase(session):
     
     sy_W4 = t_System(C_ID=co_GW.ID,
                        Name="Warhammer 40.000",
-                       Description="Dark Future SciFi Mass Battle t_System")
+                       Description="Dark Future SciFi Mass Battle")
     sy_DF = t_System(C_ID=co_HW.ID,
                        Name="Dropfleet Commander",
                        Description="SciFi Fleet Battle")
     sy_DZ = t_System(C_ID=co_HW.ID,
                        Name="Dropzone Commander",
-                       Description="10mm SciFi Mass Battle t_System")
+                       Description="10mm SciFi Mass Battle")
     
     se_SF = t_Setting(Name="SciFi",
                         Description="A system set in the future with considerable " + 

@@ -7,12 +7,14 @@ from Database.DBService import DBService
 
 def main():
     db = DBService()
-#     db.createTables()
-#     db.createDataBase()
-#     print("DB Created")
-    systems = db.getSystems()
-    for sys in systems:
-        print(sys)
+    db.dropTables()
+    db.createTables()
+    db.createDataBase()
+    print("DB Created")
+    print(db.getSystems())
+    print(db.getCompanies())
+        
+    
    
 if __name__ == "__main__":
     main();   
