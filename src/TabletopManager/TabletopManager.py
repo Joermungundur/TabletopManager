@@ -5,13 +5,13 @@ Created on 06.12.2017
 '''
 import sys
 from PyQt5.QtWidgets import QApplication
-from UI.MainWindow import MainWindow
 from Database.DBService import DBService
+from UI.MainWindow import MainWindow
 
 def main():
     db = DBService()
     app = QApplication(sys.argv)
-    UI = MainWindow(db)
+    UI = MainWindow(db, "eng")
     sys.exit(app.exec_())
 
 if __name__ == "__main__":

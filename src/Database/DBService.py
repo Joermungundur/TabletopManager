@@ -4,11 +4,10 @@ Created on 06.12.2017
 @author: mabelli
 '''
 from Database.Basic import Basic
-from Database.Tables import t_Company, t_System, t_Setting, t_Color, t_Color_Type, \
-                            t_Paint_Scheme, t_Paint_Scheme_Line, zt_System_Setting, \
-                            zt_Color_Color_Type
-from Database.CreateDatabase import createDatabase as cdb
-from Database.Tables import createTables as ct
+from Database.Tables import t_Company, t_System, t_Setting, t_Color, t_Color_Type,\
+                            t_Paint_Scheme, t_Paint_Scheme_Line, zt_System_Setting
+from Database.CreateDatabase import create_database as cdb
+from Database.Tables import create_tables as ct
 
 class DBService():
     
@@ -19,45 +18,54 @@ class DBService():
         self.meta       = basic.meta
         self.session    = basic.session
     
-    def dropTables(self):
+    def drop_tables(self):
         self.base.metadata.drop_all(self.con)
     
-    def createTables(self):
+    def create_tables(self):
         ct(self.meta, self.con, self.session)
         
-    def createDataBase(self):
+    def create_dataBase(self):
         cdb(self.session)
     
-    def _getFromDB(self, tabletype):
-        ret = []
+    def _get_from_DB(self, tabletype):  
+        ret = []      
         for table in self.session.query(tabletype).order_by(tabletype.ID):
             ret.append(table)
         return ret
     
-    def getCompanies(self):
-        return self._getFromDB(t_Company)
+    def get_companies(self):
+        return self._get_from_DB(t_Company)
         
-    def getSystems(self):
-        return self._getFromDB(t_System)
+    def get_systems(self):
+        return self._get_from_DB(t_System)
     
-    def getSettings(self):
-        return self._getFromDB(t_Setting)
+    def get_settings(self):
+        return self._get_from_DB(t_Setting)
     
-    def getColor(self):
-        return self._getFromDB(t_Color)
+    def get_color(self):
+        return self._get_from_DB(t_Color)
     
-    def getColorType(self):
-        return self._getFromDB(t_Color_Type)
-    
-    def getPaintScheme(self):
-        return self._getFromDB(t_Paint_Scheme)
-    
-    def getPaintSchemeLine(self):
-        return self._getFromDB(t_Paint_Scheme_Line)
-    
-    def getZtSystemSetting(self):
-        return self._getFromDB(zt_System_Setting)
-    
-    def getZtColorColorType(self):
-        return self._getFromDB(zt_Color_Color_Type)
+    def get_full_colors(self):
+        ret = []
+        for table in self.session.query(t_Color.Name,
+                                        t_Company.Name.label("Company name"),
+                                        t_Color_Type.Name.label("Color type"),
+                                        t_Color.InStock, 
+                                        t_Color.Owned).join(t_Company).join(t_Color_Type).filter(
+                                            t_Company.ID == t_Color.C_ID,
+                                            t_Color_Type.ID == t_Color.CT_ID):
+            ret.append(table)
+        return ret
             
+    
+    def get_color_type(self):
+        return self._get_from_DB(t_Color_Type)
+    
+    def get_paint_scheme(self):
+        return self._get_from_DB(t_Paint_Scheme)
+    
+    def get_paint_scheme_line(self):
+        return self._get_from_DB(t_Paint_Scheme_Line)
+    
+    def get_zt_system_setting(self):
+        return self._get_from_DB(zt_System_Setting)            

@@ -34,15 +34,13 @@ class t_System(Basic.base):
     Name = Column(String(50))
     Description = Column(String)
     settings = relationship("zt_System_Setting", back_populates="system")
-#     settings = relationship("t_Setting", secondary=zt_System_Setting,
-#                             back_populates="systems", passive_deletes=True)
     company = relationship("t_Company", back_populates="systems")
     
     def __repr__(self):
         return "Id = {}\nC_ID = {}\nName = {}\nDescription = {}".format(str(self.ID), 
-                                                                          str(self.C_ID), 
-                                                                          self.Name, 
-                                                                          self.Description)
+                                                                        str(self.C_ID), 
+                                                                        self.Name, 
+                                                                        self.Description)
         
 class t_Setting(Basic.base):
     __tablename__ = "setting"
@@ -51,9 +49,7 @@ class t_Setting(Basic.base):
     Name = Column(String(50))
     Description = Column(String)
     systems = relationship("zt_System_Setting", back_populates="setting")
-#     systems = relationship("t_System", secondary=zt_System_Setting,
-#                            back_populates="settings", passive_deletes=True)
-    
+
     def __repr__(self):
         return "Id = {}\nName = {}\nDescription = {}".format(str(self.ID), 
                                                                self.Name, 
@@ -65,19 +61,19 @@ class t_Color(Basic.base):
     ID = Column(BigInteger, primary_key=True)
     C_ID = Column(BigInteger, ForeignKey('company.ID', ondelete='CASCADE'))
     Name = Column(String(50))
+    CT_ID = Column(BigInteger, ForeignKey('color_type.ID', ondelete='CASCADE'))
     ID_Num = Column(String(50))
     Owned = Column(Boolean, default=True)
-    InStock = Column(Boolean, default=True) 
-    types = relationship("zt_Color_Color_Type", back_populates="color")
-#     types = relationship("t_Color_Type", secondary=zt_Color_Color_Type,
-#                          back_populates="colors", passive_deletes=True)
+    InStock = Column(Boolean, default=True)
     company = relationship("t_Company", back_populates="colors")
     scheme_lines = relationship("t_Paint_Scheme_Line", back_populates="colors", passive_deletes=True)
+    type = relationship("t_Color_Type", back_populates="colors")
     
     def __repr__(self):
         return "Id = {}\nC_ID = {}\nName = {}\nID_Num = {}\nOwned = {}\nInStock = {}".format(str(self.ID), 
                                                                                              str(self.C_ID), 
-                                                                                             self.Name, 
+                                                                                             self.Name,
+                                                                                             str(self.CT_ID), 
                                                                                              str(self.ID_Num),
                                                                                              str(self.Owned),
                                                                                              str(self.InStock))
@@ -87,9 +83,7 @@ class t_Color_Type(Basic.base):
     
     ID = Column(BigInteger, primary_key=True)
     Name = Column(String)
-    colors = relationship("zt_Color_Color_Type", back_populates="type")
-#     colors = relationship("t_Color", secondary=zt_Color_Color_Type,
-#                           back_populates="types", passive_deletes=True)
+    colors = relationship("t_Color", back_populates="type")
 
     def __repr__(self):
         return "Id = {}\nName = {}".format(str(self.ID), self.Name)
@@ -131,25 +125,14 @@ class zt_System_Setting(Basic.base):
     def __repr__(self):
         return "Sy_ID = {}\nSe_ID = {}".format(str(self.Sy_ID), str(self.Se_ID))
     
-class zt_Color_Color_Type(Basic.base):
-    __tablename__ = "zt_color_color_type"
-    Co_ID = Column(BigInteger, ForeignKey("color.ID", ondelete='CASCADE'), primary_key=True)
-    Ct_ID = Column(BigInteger, ForeignKey("color_type.ID", ondelete='CASCADE'), primary_key=True)
-    color = relationship("t_Color", back_populates="types")
-    type = relationship("t_Color_Type", back_populates="colors")
-    
-    def __repr__(self):
-        return "Co_ID = {}\nCt_ID = {}".format(str(self.Co_ID), str(self.Ct_ID))
-        
-def createTables(meta, con, session):  
+def create_tables(meta, con, session):  
     t_Company.__table__.create(session.bind)
+    t_Color_Type.__table__.create(session.bind)
     t_System.__table__.create(session.bind)
     t_Setting.__table__.create(session.bind)
     t_Color.__table__.create(session.bind)
-    t_Color_Type.__table__.create(session.bind)
     t_Paint_Scheme.__table__.create(session.bind)
     t_Paint_Scheme_Line.__table__.create(session.bind)
-    zt_Color_Color_Type.__table__.create(session.bind)
     zt_System_Setting.__table__.create(session.bind)
 
     meta.create_all(con)

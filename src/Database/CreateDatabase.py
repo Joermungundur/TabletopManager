@@ -4,10 +4,11 @@ Created on 29.11.2017
 http://docs.sqlalchemy.org/en/latest/orm/basic_relationships.html
 @author: mabelli
 '''
-from Database.Tables import t_Color, t_Company, t_System, t_Setting, zt_System_Setting
+from Database.Tables import t_Color, t_Company, t_System, t_Setting, zt_System_Setting,\
+    t_Color_Type
 from Database.Colors import createWPColors
  
-def createDatabase(session):
+def create_database(session):
     
     co_GW = t_Company(Name="Games Workshop",
                         Description="Der Platzhirsch",
@@ -47,7 +48,18 @@ def createDatabase(session):
                         Description="A system set in universe where things didn't " + 
                                     "necessarily for the best")
     
-    createWPColors(t_Color, session, co_AP.ID)
+    ct_ABP = t_Color_Type(Name="Acrylic base paint")
+    ct_AAP = t_Color_Type(Name="Acrylic airbrush paint")
+    ct_AEP = t_Color_Type(Name="Acrylic effect paint")
+    ct_AWa = t_Color_Type(Name="Acrylic Wash")
+    ct_Var = t_Color_Type(Name="Varnish")
+    ct_Pri = t_Color_Type(Name="Primer")
+    ct_Uti = t_Color_Type(Name="Utility")
+    colorTypes = [ct_ABP, ct_AAP, ct_AEP, ct_AWa, ct_Var, ct_Pri, ct_Uti]
+    session.add_all(colorTypes)
+    session.commit()
+    
+    createWPColors(t_Color, session, co_AP.ID, colorTypes)
     
     session.add_all([sy_W4, sy_DF, sy_DZ,
                      se_SF, se_MB, se_FB, se_DY]) 
