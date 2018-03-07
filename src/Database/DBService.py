@@ -4,19 +4,20 @@ Created on 06.12.2017
 @author: mabelli
 '''
 from Database.Basic import Basic
-from Database.Tables import t_Company, t_System, t_Setting, t_Color, t_Color_Type,\
+from Database.Tables import t_Company, t_System, t_Setting, t_Color, t_Color_Type, \
                             t_Paint_Scheme, t_Paint_Scheme_Line, zt_System_Setting
 from Database.CreateDatabase import create_database as cdb
 from Database.Tables import create_tables as ct
 
-class DBService():
+
+class DBService:
     
     def __init__(self):
         basic = Basic()
-        self.con        = basic.con
-        self.base       = basic.base
-        self.meta       = basic.meta
-        self.session    = basic.session
+        self.con = basic.con
+        self.base = basic.base
+        self.meta = basic.meta
+        self.session = basic.session
     
     def drop_tables(self):
         self.base.metadata.drop_all(self.con)
@@ -47,16 +48,20 @@ class DBService():
     
     def get_full_colors(self):
         ret = []
-        for table in self.session.query(t_Color.Name,
-                                        t_Company.Name.label("Company name"),
-                                        t_Color_Type.Name.label("Color type"),
-                                        t_Color.InStock, 
-                                        t_Color.Owned).join(t_Company).join(t_Color_Type).filter(
-                                            t_Company.ID == t_Color.C_ID,
-                                            t_Color_Type.ID == t_Color.CT_ID):
+        for table in self.session.query(
+            t_Color.ID,
+            t_Color.Name,
+            t_Company.Name.label("Company_name"),
+            t_Color_Type.Name.label("Color_type"),
+            t_Color.ID_Num,
+            t_Color.InStock,
+            t_Color.Owned,
+            t_Color.Deleted).join(t_Company).join(t_Color_Type).filter(
+                t_Company.ID == t_Color.C_ID,
+                t_Color_Type.ID == t_Color.CT_ID,
+                t_Color.Deleted == False).order_by(t_Color.ID):
             ret.append(table)
         return ret
-            
     
     def get_color_type(self):
         return self._get_from_DB(t_Color_Type)
