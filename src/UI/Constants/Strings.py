@@ -5,11 +5,14 @@ Created on 14.12.2017
 '''
 
 str_LABEL_ALL = {
-    "eng" : "All",
-    "ger" : "Alle"}
+    "eng": "All",
+    "ger": "Alle"}
 str_LABEL_COLORS = {
-    "eng" : "Colors",
-    "ger" : "Farben"}
+    "eng": "Colors",
+    "ger": "Farben"}
+str_LABEL_BRUSHES = {
+    "eng": "Brushes",
+    "ger": "Pinsel"}
 str_LABEL_NAME = {
     "eng" : "Name",
     "ger" : "Name"}
@@ -19,6 +22,9 @@ str_LABEL_COMPANY = {
 str_LABEL_COLOR_TYPE = {
     "eng" : "Colortype",
     "ger" : "Farbtyp"}
+str_LABEL_BRUSH_TYPE = {
+    "eng": "Brushtype",
+    "ger": "Pinselart"}
 str_LABEL_OWNED = {
     "eng" : "Owned",
     "ger" : "Im Besitz"}

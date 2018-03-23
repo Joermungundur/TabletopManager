@@ -5,6 +5,8 @@ Created on 06.12.2017
 '''
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.Qt import QTabWidget
+
+from UI.Panels.BrushPanel import BrushPanel
 from UI.Panels.ColorPanel import ColorPanel
 from UI.Constants import Strings
 
@@ -22,9 +24,10 @@ class MainWindow(QMainWindow):
         
         self.tabs = QTabWidget(self)
         self.tabs.resize(self.appSize[0], self.appSize[1])
-        
         self.colorPanel = ColorPanel(self.dbService, self.lang)
-        self.tabs.addTab(self.colorPanel, Strings.str_LABEL_COLORS.get("eng"))
+        self.brushPanel = BrushPanel(self.dbService, self.lang)
+        self.tabs.addTab(self.colorPanel, Strings.str_LABEL_COLORS.get(self.lang))
+        self.tabs.addTab(self.brushPanel, Strings.str_LABEL_BRUSHES.get(self.lang))
         
         self.setWindowTitle("Tabletop Manager")
         self.move(100, 100)

@@ -5,7 +5,7 @@ Created on 06.12.2017
 '''
 from Database.Basic import Basic
 from Database.Tables import t_Company, t_System, t_Setting, t_Color, t_Color_Type, \
-                            t_Paint_Scheme, t_Paint_Scheme_Line, zt_System_Setting
+    t_Paint_Scheme, t_Paint_Scheme_Line, zt_System_Setting, t_Brush, t_Brush_Type
 from Database.CreateDatabase import create_database as cdb
 from Database.Tables import create_tables as ct
 
@@ -62,7 +62,22 @@ class DBService:
                 t_Color.Deleted == False).order_by(t_Color.ID):
             ret.append(table)
         return ret
-    
+
+    def get_full_brushes(self):
+        ret = []
+        for table in self.session.query(
+            t_Brush.ID,
+            t_Brush.Name,
+            t_Company.Name.label("Company_name"),
+            t_Brush_Type.Name.label("Brush_type"),
+            t_Brush.Owned,
+            t_Brush.Deleted).join(t_Company).join(t_Brush_Type).filter(
+                t_Company.ID == t_Brush.C_ID,
+                t_Brush_Type.ID == t_Brush.BT_ID,
+                t_Brush.Deleted == False).order_by(t_Brush.ID):
+            ret.append(table)
+        return ret
+
     def get_color_type(self):
         return self._get_from_DB(t_Color_Type)
     
