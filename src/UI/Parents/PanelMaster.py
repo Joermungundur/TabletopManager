@@ -12,10 +12,10 @@ class PanelMaster(QWidget):
         self.db = dbService
         self.lang = lang
 
-        self.buttonBar = self._create_buttonBar(self.lang)
+        self.buttonBar = self._create_button_layout(self.lang)
 
-    def _create_buttonBar(self, lang):
-        buttonBar = QVBoxLayout()
+    def _create_button_layout(self, lang):
+        button_bar = QVBoxLayout()
 
         btn_new = QPushButton(Strings.str_LABEL_NEW.get(lang))
         btn_new.clicked.connect(self._new)
@@ -29,16 +29,16 @@ class PanelMaster(QWidget):
         btn_refresh = QPushButton(Strings.str_LABEL_REFRESH.get(lang))
         btn_refresh.clicked.connect(self.reload)
 
-        buttonBar.addSpacing(30)
-        buttonBar.addWidget(btn_new)
-        buttonBar.addWidget(btn_edit)
-        buttonBar.addWidget(btn_delete)
-        buttonBar.addSpacing(15)
-        buttonBar.addWidget(btn_refresh)
+        button_bar.addSpacing(30)
+        button_bar.addWidget(btn_new)
+        button_bar.addWidget(btn_edit)
+        button_bar.addWidget(btn_delete)
+        button_bar.addSpacing(15)
+        button_bar.addWidget(btn_refresh)
 
-        buttonBar.addStretch(1)
+        button_bar.addStretch(1)
 
-        return buttonBar
+        return button_bar
 
     def initUI(self):
         pass

@@ -20,7 +20,7 @@ class BrushPanel(PanelMaster):
 
         self.brushes = self.db.get_full_brushes()
         self.company, self.brushType = self._get_search_criterions(self.brushes, self.lang)
-        self.buttonBar = self._create_buttonBar(self.lang)
+        self.buttonBar = self._create_button_layout(self.lang)
         self.tb_brush = self._create_brushTable(self.lang)
         self.tf_name, self.cb_company, self.cb_brushType, self.cb_owned, \
             self. filterLayout = self._create_filterLayout(self.lang)

@@ -23,7 +23,7 @@ class ColorPanel(PanelMaster):
 
         self.colors = self.db.get_full_colors()
         self.company, self.colorType = self._get_search_criterions(self.colors, self.lang)
-        self.buttonBar = self._create_buttonBar(self.lang)
+        self.buttonBar = self._create_button_layout(self.lang)
         self.tb_color = self._create_colorTable(self.lang)
         self.tf_name, self.cb_company, self.cb_colorType, self.cb_owned, \
         self.cb_inStock, self.filterLayout = self._create_filterLayout(self.lang)
