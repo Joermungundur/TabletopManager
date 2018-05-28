@@ -86,6 +86,9 @@ class DBService:
     
     def get_paint_scheme_line(self):
         return self._get_from_DB(t_Paint_Scheme_Line)
-    
+
+    def get_brush_type(self):
+        return self._get_from_DB(t_Brush_Type)
+
     def get_zt_system_setting(self):
-        return self._get_from_DB(zt_System_Setting)            
+        return self._get_from_DB(zt_System_Setting)

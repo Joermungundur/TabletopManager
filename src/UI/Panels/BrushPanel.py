@@ -158,6 +158,15 @@ class BrushPanel(PanelMaster):
             return False
         return True
 
+    def _new(self):
+        pass
+
+    def _edit(self):
+        pass
+
+    def _del(self):
+        pass
+
     def reload(self):
         self.brushes = self.db.get_full_brushes()
         self.company, self.brushType = self._get_search_criterions(self.brushes, self.lang)

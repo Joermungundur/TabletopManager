@@ -71,3 +71,9 @@ str_TITLE_NEW_COMPANY = {
 str_TITLE_NEW_TYPE = {
     "eng": "Add new type",
     "ger": "Typ hinzufügen"}
+str_TITLE_NEW_BRUSH = {
+    "eng": "Create new brush",
+    "ger": "Neuen Pinsel erstellen"}
+str_TITLE_EDIT_BRUSH = {
+    "eng": "Edit brush",
+    "ger": "Pinsel ändern"}

@@ -16,12 +16,12 @@ from UI.Parents.DialogMaster import DialogMaster
 
 class ColorDialog(DialogMaster):
     def __init__(self, dbService, lang, color=None, parent=None):
-        super(ColorDialog, self).__init__(dbService, lang, Strings.str_TITLE_NEW_COLOR.get(lang) if color is None else \
-            Strings.str_TITLE_EDIT_COLOR.get(lang), parent)
+        super(ColorDialog, self).__init__(dbService, lang, Strings.str_TITLE_NEW_COLOR.get(lang) if color is None else
+                                          Strings.str_TITLE_EDIT_COLOR.get(lang), parent)
         self.result = ""
         self.color = color
-        self.companies = self._get_companies()
-        self.colorTypes = self._get_colorTypes()
+        self.companies = self.dbService.get_companies()
+        self.colorTypes = self.dbService.get_color_type()
 
         self._initUI()
         if color is not None:
@@ -69,12 +69,6 @@ class ColorDialog(DialogMaster):
         self.txt_article_id.setText(color.ID_Num)
         self.cb_owned.setChecked(color.Owned)
         self.cb_inSto.setChecked(color.InStock)
-
-    def _get_companies(self):
-        return self.dbService.get_companies()
-
-    def _get_colorTypes(self):
-        return self.dbService.get_color_type()
 
     def _mk_left_layout(self, lang, companies, colorTypes):
         ret = QVBoxLayout()
@@ -181,4 +175,4 @@ class ColorDialog(DialogMaster):
         AddCompanyDialog(self.dbService, self.lang, self).exec()
 
     def _add_type(self):
-        AddTypeDialog(self.dbService, self.lang,self).exec()
+        AddTypeDialog(self.dbService, self.lang, self).exec()
