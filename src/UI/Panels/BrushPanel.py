@@ -50,7 +50,7 @@ class BrushPanel(PanelMaster):
         cb_company.addItems(self.company)
         cb_company.currentIndexChanged.connect(self._filter)
 
-        lbl_brushType = QLabel(Strings.str_LABEL_COLOR_TYPE.get(lang))
+        lbl_brushType = QLabel(Strings.str_LABEL_BRUSH_TYPE.get(lang))
         cb_brushType = QComboBox(self)
         cb_brushType.addItems(self.brushType)
         cb_brushType.currentIndexChanged.connect(self._filter)
@@ -142,7 +142,7 @@ class BrushPanel(PanelMaster):
             if self._match_filter_with_brush(self.filter, brush):
                 filtered_brushes.append(brush)
 
-        self.tb_color.setRowCount(len(filtered_brushes))
+        self.tb_brush.setRowCount(len(filtered_brushes))
         self._fill_brushTable(filtered_brushes, self.tb_brush)
 
     def _match_filter_with_brush(self, my_filter, brush):
@@ -150,7 +150,7 @@ class BrushPanel(PanelMaster):
             return False
         if not re.match(my_filter["company"].lower(), brush.Company_name.lower()):
             return False
-        if not re.match(my_filter["colorType"].lower(), brush.Color_type.lower()):
+        if not re.match(my_filter["brushType"].lower(), brush.Brush_type.lower()):
             return False
         # checkBox Tristate : 0 = True, 1 = None, 2 = False
         if (my_filter["owned"] == 2 and brush.Owned is False) or \

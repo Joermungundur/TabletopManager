@@ -41,6 +41,7 @@ class t_System(Basic.base):
     Deleted = Column(Boolean, default=False)
     settings = relationship("zt_System_Setting", back_populates="system")
     company = relationship("t_Company", back_populates="systems")
+    paint_schemes = relationship("t_Paint_Scheme", back_populates="systems")
 
     def __repr__(self):
         return "Id = {}\nC_ID = {}\nName = {}\nDescription = {}\nDeleted{}".format(str(self.ID),
@@ -48,8 +49,6 @@ class t_System(Basic.base):
                                                                                    self.Name,
                                                                                    self.Description,
                                                                                    str(self.Deleted))
-
-
 class t_Setting(Basic.base):
     __tablename__ = "setting"
 
@@ -104,12 +103,15 @@ class t_Paint_Scheme(Basic.base):
     ID = Column(BigInteger, primary_key=True)
     Name = Column(String(100))
     A_ID = Column(BigInteger)
+    S_ID = Column(BigInteger, ForeignKey('system.ID', ondelete='CASCADE'))
+    Active = Column(Boolean, default=True)
     Deleted = Column(Boolean, default=False)
     lines = relationship("t_Paint_Scheme_Line", back_populates="schemes", passive_deletes=True)
+    systems = relationship("t_System", back_populates="paint_schemes")
 
     def __repr__(self):
         return "Id = {}\nName = {}\nA_ID = {}\nDeleted{}".format(str(self.ID), self.Name, str(self.A_ID),
-                                                                 str(self.Deleted))
+                                                                 str(self.S_ID), str(self.Deleted))
 
 
 class t_Paint_Scheme_Line(Basic.base):

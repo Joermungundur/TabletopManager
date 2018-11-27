@@ -13,6 +13,9 @@ str_LABEL_COLORS = {
 str_LABEL_BRUSHES = {
     "eng": "Brushes",
     "ger": "Pinsel"}
+str_LABEL_PAINT_SCHEMES = {
+    "eng": "Paintschemes",
+    "ger": "Bemalschemata"}
 str_LABEL_NAME = {
     "eng": "Name",
     "ger": "Name"}
@@ -58,6 +61,15 @@ str_LABEL_DESCRIPTION = {
 str_LABEL_WEBSITE = {
     "eng": "Website",
     "ger": "Webseite"}
+str_LABEL_SYSTEM = {
+    "eng": "System",
+    "ger": "System"}
+str_LABEL_ACTIVE = {
+    "eng": "Active",
+    "ger": "Aktiv"}
+str_LABEL_STEPS = {
+    "eng": "Steps",
+    "ger": "Schritte"}
 
 str_TITLE_NEW_COLOR = {
     "eng": "Create new color",

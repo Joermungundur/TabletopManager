@@ -40,6 +40,9 @@ class PanelMaster(QWidget):
 
         return button_bar
 
+    def _set_filter(self, key, value):
+        self.filter[key] = value
+
     def initUI(self):
         pass
 

@@ -8,9 +8,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative.api import declarative_base
 from sqlalchemy.orm import sessionmaker
 from Database.Constants import *
-from sqlalchemy.schema import DDLElement
-from sqlalchemy.ext import compiler
-from sqlalchemy.sql import table
 
 
 def __connect(user, password, db, host='localhost', port=5432):

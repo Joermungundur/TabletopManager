@@ -162,9 +162,6 @@ class ColorPanel(PanelMaster):
             cb_inStock.setChecked(color.InStock)
             tb_color.setCellWidget(i, 5, cb_inStock)
 
-    def _set_filter(self, key, value):
-        self.filter[key] = value
-
     def _filter(self):
         sender = self.sender()
 
