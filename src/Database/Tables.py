@@ -15,6 +15,7 @@ class t_Company(Basic.base):
     __tablename__ = "company"
 
     ID = Column(BigInteger, primary_key=True)
+    P_ID = Column(BigInteger, ForeignKey('picture.ID'))
     Name = Column(String(50))
     Description = Column(String)
     Website = Column(String(100))
@@ -22,13 +23,15 @@ class t_Company(Basic.base):
     systems = relationship("t_System", back_populates="company", passive_deletes=True)
     colors = relationship("t_Color", back_populates="company", passive_deletes=True)
     brushes = relationship("t_Brush", back_populates="company", passive_deletes=True)
+    picture = relationship("t_Picture", back_populates="company")
 
     def __repr__(self):
-        return "Id = {}\nName = {}\nDescription = {}\nWebsite = {}\nDeleted{}".format(str(self.ID),
-                                                                                      str(self.Name),
-                                                                                      self.Description,
-                                                                                      self.Website,
-                                                                                      str(self.Deleted))
+        return "Id = {}\nP_ID = {}\nName = {}\nDescription = {}\nWebsite = {}\nDeleted{}".format(str(self.ID),
+                                                                                                 str(self.P_ID),
+                                                                                                 str(self.Name),
+                                                                                                 self.Description,
+                                                                                                 self.Website,
+                                                                                                 str(self.Deleted))
 
 
 class t_System(Basic.base):
@@ -36,19 +39,24 @@ class t_System(Basic.base):
 
     ID = Column(BigInteger, primary_key=True)
     C_ID = Column(BigInteger, ForeignKey('company.ID', ondelete='CASCADE'))
+    P_ID = Column(BigInteger, ForeignKey('picture.ID'))
     Name = Column(String(50))
     Description = Column(String)
     Deleted = Column(Boolean, default=False)
     settings = relationship("zt_System_Setting", back_populates="system")
     company = relationship("t_Company", back_populates="systems")
     paint_schemes = relationship("t_Paint_Scheme", back_populates="systems")
+    picture = relationship("t_Picture", back_populates="system")
 
     def __repr__(self):
-        return "Id = {}\nC_ID = {}\nName = {}\nDescription = {}\nDeleted{}".format(str(self.ID),
-                                                                                   str(self.C_ID),
-                                                                                   self.Name,
-                                                                                   self.Description,
-                                                                                   str(self.Deleted))
+        return "Id = {}\nC_ID = {}\nP_ID = {}\nName = {}\nDescription = {}\nDeleted{}".format(str(self.ID),
+                                                                                              str(self.C_ID),
+                                                                                              str(self.P_ID),
+                                                                                              self.Name,
+                                                                                              self.Description,
+                                                                                              str(self.Deleted))
+
+
 class t_Setting(Basic.base):
     __tablename__ = "setting"
 
@@ -68,6 +76,7 @@ class t_Color(Basic.base):
 
     ID = Column(BigInteger, primary_key=True)
     C_ID = Column(BigInteger, ForeignKey('company.ID', ondelete='CASCADE'))
+    P_ID = Column(BigInteger, ForeignKey('picture.ID'))
     Name = Column(String(50))
     CT_ID = Column(BigInteger, ForeignKey('color_type.ID', ondelete='CASCADE'))
     ID_Num = Column(String(50))
@@ -77,10 +86,11 @@ class t_Color(Basic.base):
     company = relationship("t_Company", back_populates="colors")
     scheme_lines = relationship("t_Paint_Scheme_Line", back_populates="colors", passive_deletes=True)
     type = relationship("t_Color_Type", back_populates="colors")
+    picture = relationship("t_Picture", back_populates="color")
 
     def __repr__(self):
-        return "Id = {}\nC_ID = {}\nName = {}\nID_Num = {}\nOwned = {}\nInStock = {}\nDeleted{}".format(
-            str(self.ID), str(self.C_ID), self.Name, str(self.CT_ID), str(self.ID_Num), str(self.Owned),
+        return "Id = {}\nC_ID = {}\nP_ID = {}\nName = {}\nID_Num = {}\nOwned = {}\nInStock = {}\nDeleted{}".format(
+            str(self.ID), str(self.C_ID), str(self.P_ID), self.Name, str(self.CT_ID), str(self.ID_Num), str(self.Owned),
             str(self.InStock), str(self.Deleted))
 
 
@@ -88,19 +98,26 @@ class t_Color_Type(Basic.base):
     __tablename__ = "color_type"
 
     ID = Column(BigInteger, primary_key=True)
+    P_ID = Column(BigInteger, ForeignKey("picture.ID"))
     Name = Column(String)
     Description = Column(String)
     Deleted = Column(Boolean, default=False)
     colors = relationship("t_Color", back_populates="type")
+    picture = relationship("t_Picture", back_populates="type")
 
     def __repr__(self):
-        return "Id = {}\nName = {}\nDeleted{}".format(str(self.ID), self.Name, str(self.Deleted))
+        return "Id = {}\nP_ID = {{}\nName = {}\nDescription = {}\nDeleted{}".format(str(self.ID),
+                                                                                    str(self.P_ID),
+                                                                                    self.Name,
+                                                                                    self.Description,
+                                                                                    str(self.Deleted))
 
 
 class t_Paint_Scheme(Basic.base):
     __tablename__ = "paint_scheme"
 
     ID = Column(BigInteger, primary_key=True)
+    P_ID = Column(BigInteger, ForeignKey("picture.ID"))
     Name = Column(String(100))
     A_ID = Column(BigInteger)
     S_ID = Column(BigInteger, ForeignKey('system.ID', ondelete='CASCADE'))
@@ -108,29 +125,38 @@ class t_Paint_Scheme(Basic.base):
     Deleted = Column(Boolean, default=False)
     lines = relationship("t_Paint_Scheme_Line", back_populates="schemes", passive_deletes=True)
     systems = relationship("t_System", back_populates="paint_schemes")
+    picture = relationship("t_Picture", back_populates="paint_scheme")
 
     def __repr__(self):
-        return "Id = {}\nName = {}\nA_ID = {}\nDeleted{}".format(str(self.ID), self.Name, str(self.A_ID),
-                                                                 str(self.S_ID), str(self.Deleted))
+        return "Id = {}\nP_ID = {}\nP_ID = {}\nName = {}\nA_ID = {}\nActive = {}\nDeleted{}".format(str(self.ID),
+                                                                                                    str(self.P_ID),
+                                                                                                    self.Name,
+                                                                                                    str(self.A_ID),
+                                                                                                    str(self.S_ID),
+                                                                                                    str(self.Active),
+                                                                                                    str(self.Deleted))
 
 
 class t_Paint_Scheme_Line(Basic.base):
     __tablename__ = "paint_scheme_line"
 
     ID = Column(BigInteger, primary_key=True)
+    P_ID = Column(BigInteger, ForeignKey("picture.ID"))
     PS_ID = Column(BigInteger, ForeignKey('paint_scheme.ID', ondelete='CASCADE'))
     Label = Column(String(50))
     C_ID = Column(BigInteger(), ForeignKey('color.ID'))
     Deleted = Column(Boolean, default=False)
     colors = relationship("t_Color", back_populates="scheme_lines")
     schemes = relationship("t_Paint_Scheme", back_populates="lines")
+    picture = relationship("zt_Picture_Paint_Scheme_Line", back_populates="paint_scheme_line")
 
     def __repr__(self):
-        return "Id = {}\nPS_ID = {}\nLabel = {}\nC_ID = {}\nDeleted{}".format(str(self.ID),
-                                                                              str(self.PS_ID),
-                                                                              self.Label,
-                                                                              str(self.C_ID),
-                                                                              str(self.Deleted))
+        return "Id = {}\nP_ID = {}\nPS_ID = {}\nLabel = {}\nC_ID = {}\nDeleted{}".format(str(self.ID),
+                                                                                         str(self.P_ID),
+                                                                                         str(self.PS_ID),
+                                                                                         self.Label,
+                                                                                         str(self.C_ID),
+                                                                                         str(self.Deleted))
 
 
 class t_Brush(Basic.base):
@@ -156,18 +182,40 @@ class t_Brush_Type(Basic.base):
     __tablename__ = "brush_type"
 
     ID = Column(BigInteger, primary_key=True)
+    P_ID = Column(BigInteger, ForeignKey('picture.ID'))
     Name = Column(String(50))
     Description = Column(String)
     Deleted = Column(Boolean, default=False)
     brushes = relationship("t_Brush", back_populates="brush_type")
+    picture = relationship("t_Picture", back_populates="brush_type")
 
     def __repr__(self):
-        return "ID = {}\nName = {}\nDescription = {}\nDeleted = {}".format(
-            str(self.ID), self.Name, self.Description, str(self.Deleted))
+        return "ID = {}\nP_ID = {}\nName = {}\nDescription = {}\nDeleted = {}".format(
+            str(self.ID), str(self.P_ID), self.Name, self.Description, str(self.Deleted))
+
+
+class t_Picture(Basic.base):
+    __tablename__ = "picture"
+
+    ID = Column(BigInteger, primary_key=True)
+    Path = Column(String(124))
+    Description = Column(String)
+    Hash = Column(String(256))
+    company = relationship("t_Company", back_populates="picture")
+    system = relationship("t_System", back_populates="picture")
+    color = relationship("t_Color", back_populates="picture")
+    type = relationship("t_Color_Type", back_populates="picture")
+    paint_scheme = relationship("t_Paint_Scheme", back_populates="picture")
+    paint_scheme_line = relationship("zt_Picture_Paint_Scheme_Line", back_populates="picture")
+    brush_type = relationship("t_Brush_Type", back_populates="picture")
+
+    def __repr__(self):
+        return "ID = {}\nPath = {}\nDescription = {}".format(str(self.ID), self.Path, self.Description)
 
 
 class zt_System_Setting(Basic.base):
     __tablename__ = "zt_system_setting"
+
     Sy_ID = Column(BigInteger, ForeignKey("system.ID", ondelete='CASCADE'), primary_key=True)
     Se_ID = Column(BigInteger, ForeignKey("setting.ID", ondelete='CASCADE'), primary_key=True)
     system = relationship("t_System", back_populates="settings")
@@ -177,7 +225,20 @@ class zt_System_Setting(Basic.base):
         return "Sy_ID = {}\nSe_ID = {}".format(str(self.Sy_ID), str(self.Se_ID))
 
 
+class zt_Picture_Paint_Scheme_Line(Basic.base):
+    __tablename__ = "zt_picture_paint_scheme_line"
+
+    P_ID = Column(BigInteger, ForeignKey("picture.ID"), primary_key=True)
+    PS_ID = Column(BigInteger, ForeignKey("paint_scheme_line.ID"), primary_key=True)
+    picture = relationship("t_Picture", back_populates="paint_scheme_line")
+    paint_scheme_line = relationship("t_Paint_Scheme_Line", back_populates="picture")
+
+    def __repr__(self):
+        return "PID = {}\nPS_ID = {}".format(str(self.P_ID), str(self.PS_ID))
+
+
 def create_tables(meta, con, session):
+    t_Picture.__table__.create(session.bind)
     t_Company.__table__.create(session.bind)
     t_Color_Type.__table__.create(session.bind)
     t_System.__table__.create(session.bind)
@@ -188,6 +249,7 @@ def create_tables(meta, con, session):
     t_Brush_Type.__table__.create(session.bind)
     t_Brush.__table__.create(session.bind)
     zt_System_Setting.__table__.create(session.bind)
+    zt_Picture_Paint_Scheme_Line.__table__.create(session.bind)
 
     meta.create_all(con)
     session.commit()
